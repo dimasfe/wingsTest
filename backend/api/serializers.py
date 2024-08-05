@@ -44,7 +44,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
-        fields = ['name', "created_at", "last_update",]
+        fields = ['id','name', "created_at", "last_update",]
         
     def update(self, instance, validated_data):
         # Update only the fields present in validated_data

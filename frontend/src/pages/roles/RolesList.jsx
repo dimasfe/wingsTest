@@ -8,6 +8,9 @@ import React, { useEffect, useState } from 'react';
 function RoleList() {
     const [roles, setRoles] = useState([]);
     const [search, setSearch] = useState("");
+    const [roleIds, setRoleIds] = useState([]); // State to store role IDs
+    const [selectedRole, setSelectedRole] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('access'); // Get Token from local storage
@@ -19,7 +22,9 @@ function RoleList() {
             }
         })
         .then(response => {
-            setRoles(response.data); // assuming response.data contains the roles
+            const rolesData = response.data;
+            setRoles(rolesData); // assuming response.data contains the roles
+            setRoleIds(rolesData.map(role => role.id)); // Extract and store role IDs
         })
         .catch(error => {
             console.error('Error fetching roles:', error);
@@ -35,6 +40,22 @@ function RoleList() {
     const filteredRoles = Array.isArray(roles) ? roles.filter(role =>
         role.name.toLowerCase().includes(search.toLowerCase())
     ) : [];
+
+    // Create Roles Function
+    const handleAddRolesClick = () => {
+        navigate('/roles/create/');
+    };
+
+    // Edit Data
+    
+    const handleEdit = (roleId) => {
+        if (roleId) {
+            navigate(`/roles/update/${roleId}/`);
+
+        } else {
+            console.error('Role ID is undefined');
+        }
+    };
 
     // Function to format date as dd/mm/yyyy
     const formatDate = (dateStr) => {
@@ -58,7 +79,7 @@ function RoleList() {
                     <h1>Roles</h1>
                 </div>
                 <div className="col text-end">
-                    <button className="btn btn-primary">
+                    <button className="btn btn-primary" onClick={handleAddRolesClick}>
                         Add Roles
                     </button>
                 </div>
@@ -88,6 +109,7 @@ function RoleList() {
                                 <th scope="col">Name</th>
                                 <th scope="col">Created At</th>
                                 <th scope="col">Last Update</th>
+                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
 
@@ -95,16 +117,21 @@ function RoleList() {
                         <tbody>
                             {filteredRoles.length > 0 ? (
                                 filteredRoles.map((role, index) => (
-                                    <tr key={role.id}>
+                                    <tr key={role.name}>
                                         <td scope="row">{index + 1}</td>
                                         <td>{role.name}</td>
                                         <td>{formatDate(role.created_at)}</td>
                                         <td>{formatDate(role.last_update)}</td>
+                                        <td>
+                                            <button className="btn btn-warning me-2" onClick={() => handleEdit(role.id)} >
+                                                Edit
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4" className="text-center">No role found</td>
+                                    <td colSpan="5" className="text-center">No role found</td>
                                 </tr>
                             )}
                         </tbody>

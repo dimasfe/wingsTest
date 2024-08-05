@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import RolesList from "./pages/roles/RolesList"
+import RolesCreate from "./pages/roles/RolesCreate"
+import RolesUpdate from "./pages/roles/RolesUpdate"
 import TaskList from "./pages/task/TaskList"
 
 function Logout() {
@@ -35,6 +37,8 @@ function App() {
           }
         >
           <Route path="roles" element={<RolesList />} />
+          <Route path="roles/create" element={<RolesCreate />} />
+          <Route path="roles/update/:roleId" element={<RolesUpdate />} />
           <Route path="tasks" element={<TaskList />} />
         </Route>
         <Route path="/login" element={<Login />} />

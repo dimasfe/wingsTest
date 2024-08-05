@@ -55,7 +55,7 @@ function Register() {
         } catch (error) {
             if (error.response && error.response.data && error.response.data.detail) {
                 const errorMessage = error.response.data.detail;
-                if (errorMessage === "E-mail has been registered!") {
+                if (errorMessage === "Username has been registered!") {
                     // Set email error message
                     setEmailError(errorMessage);
                 } else {
