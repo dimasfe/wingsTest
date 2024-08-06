@@ -105,11 +105,11 @@ function TaskList() {
                         {/* Head */}
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Due Date</th>
-                                <th scope="col">Assigned To</th>
+                                <th scope="col" className="text-center">#</th>
+                                <th scope="col" className="text-center">Title</th>
+                                <th scope="col" className="text-center">Description</th>
+                                <th scope="col" className="text-center">Due Date</th>
+                                <th scope="col" className="text-center">Assigned To</th>
                             </tr>
                         </thead>
 
@@ -118,10 +118,10 @@ function TaskList() {
                             {filteredTasks.length > 0 ? (
                                 filteredTasks.map((task, index) => (
                                     <tr key={task.id}>
-                                        <th scope="row">{index + 1}</th>
+                                        <th scope="row" className="text-center">{index + 1}</th>
                                         <td>{task.title}</td>
                                         <td>{task.description}</td>
-                                        <td>{formatDate(task.due_date)}</td>
+                                        <td className="text-center">{formatDate(task.due_date)}</td>
                                         <td>{users[task.assigned_to] || 'Unknown'}</td>
                                     </tr>
                                 ))

@@ -47,7 +47,6 @@ function RoleList() {
     };
 
     // Edit Data
-    
     const handleEdit = (roleId) => {
         if (roleId) {
             navigate(`/roles/update/${roleId}/`);
@@ -105,11 +104,11 @@ function RoleList() {
                         {/* Head */}
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Last Update</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col" className="text-center">#</th>
+                                <th scope="col" className="text-center">Name</th>
+                                <th scope="col" className="text-center">Created At</th>
+                                <th scope="col" className="text-center">Last Update</th>
+                                <th scope="col" className="text-center">Actions</th>
                             </tr>
                         </thead>
 
@@ -118,11 +117,11 @@ function RoleList() {
                             {filteredRoles.length > 0 ? (
                                 filteredRoles.map((role, index) => (
                                     <tr key={role.name}>
-                                        <td scope="row">{index + 1}</td>
+                                        <td scope="row" className="text-center">{index + 1}</td>
                                         <td>{role.name}</td>
-                                        <td>{formatDate(role.created_at)}</td>
-                                        <td>{formatDate(role.last_update)}</td>
-                                        <td>
+                                        <td className="text-center">{formatDate(role.created_at)}</td>
+                                        <td className="text-center">{formatDate(role.last_update)}</td>
+                                        <td className="d-flex justify-content-center">
                                             <button className="btn btn-warning me-2" onClick={() => handleEdit(role.id)} >
                                                 Edit
                                             </button>

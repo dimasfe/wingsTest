@@ -21,6 +21,7 @@ const Dashboard = () => {
                         <Nav className="flex-column">
                             <Nav.Link as={Link} to="roles">Roles</Nav.Link>
                             <Nav.Link as={Link} to="tasks">Tasks</Nav.Link>
+                            <Nav.Link as={Link} to="users">Users</Nav.Link>
                         </Nav>
                     </Col>
                     <Col md={10} className="p-4">

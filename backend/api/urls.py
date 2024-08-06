@@ -6,6 +6,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
 
     # Users
+    path('users/', UserListView.as_view(), name='user-list'),
     path('users/create/', CreateUserView.as_view(), name='create-user'),
     path('users/update/roles/<int:pk>/', UpdateUserRoleView.as_view(), name='update-user-role'),
 
