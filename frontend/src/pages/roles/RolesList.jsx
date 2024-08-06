@@ -90,7 +90,7 @@ function RoleList() {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Search Role"
+                        placeholder="Search Role by Name"
                         value={search}
                         onChange={handleSearchChange}
                     />

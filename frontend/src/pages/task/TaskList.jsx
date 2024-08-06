@@ -77,6 +77,14 @@ function TaskList() {
             <div className="row mb-3">
                 <div className="col">
                     <h1>Tasks</h1>
+
+                    <br />
+                    <p>Backend sudah bisa semua</p> 
+                    <br />
+                    <p>Error : </p>
+                    <p>1. Belum bisa menambah data dari UI</p>
+                    <p>2. Belum bisa mengupdate data dari UI</p>
+                    <p>2. Belum bisa menghapus data dari UI</p>
                 </div>
                 <div className="col text-end">
                     <button className="btn btn-primary">
@@ -91,7 +99,7 @@ function TaskList() {
                     <input
                         type="text"
                         className="form-control"
-                        placeholder="Search Tasks"
+                        placeholder="Search Tasks by Title or Description"
                         value={search}
                         onChange={handleSearchChange}
                     />

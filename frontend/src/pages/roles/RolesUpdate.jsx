@@ -12,7 +12,7 @@ const RolesUpdate = () => {
         // Fetch existing role data if necessary
         const fetchRole = async () => {
             try {
-                const response = await api.get(`/api/roles/update/${roleId}/`);
+                const response = await api.patch(`/api/roles/update/${roleId}/`);
                 
                 if (response.status === 200) {
                     setName(response.data.name); // Populate form with existing data
@@ -34,7 +34,6 @@ const RolesUpdate = () => {
     
         try {
             const response = await api.put(`/api/roles/update/${roleId}/`, payload);
-            console.log(response.status);
     
             if (response.status === 200) {
                 toast.success("Role Successfully Updated!", { position: "top-center", autoClose: 2000 });

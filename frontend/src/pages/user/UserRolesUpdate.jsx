@@ -1,81 +1,83 @@
-import api from "../../api.js";
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from 'react';
+import api from '../../api.js';
+import { useParams, useNavigate } from 'react-router-dom';
 
-const UserRolesUpdate = () => {
-    const [role, setRole] = useState('');
+function UserRolesUpdate() {
+    const { roleId } = useParams();
     const navigate = useNavigate();
-    const { userId } = useParams(); // Get userId from route params
+    const [role, setRole] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch existing role data if necessary
+        const token = localStorage.getItem('access');
+
+        // Fetch role data
         const fetchRole = async () => {
             try {
-                const response = await api.get(`/api/users/update/roles/${userId}/`);
+                const response = await api.patch(`/api/users/update/roles/${roleId}/`);
                 
                 if (response.status === 200) {
-                    setRole(response.data.id); // Populate form with existing data
+                    setRole(response.data.role); // Populate form with existing data
                 } else {
-                    toast.error('Failed to fetch user data.', { position: "bottom-center" });
+                    toast.error('Failed to fetch role data.', { position: "bottom-center" });
                 }
             } catch (error) {
-                toast.error('An error occurred while fetching user data.', { position: "bottom-center" });
+                toast.error('An error occurred while fetching role data.', { position: "bottom-center" });
             }
         };
+    }, [roleId]);
 
-        fetchRole();
-    }, [userId]);
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        const payload = { id };
-    
-        try {
-            const response = await api.put(`/api/roles/update/${userId}/`, payload);
-            console.log(response.status);
-    
-            if (response.status === 200) {
-                toast.success("Role Successfully Updated!", { position: "top-center", autoClose: 2000 });
-                navigate('/roles'); // Redirect to roles list
-            } else {
-                toast.error(`Failed to update role.`, { position: "bottom-center" });
-            }
-        } catch (error) {
-            toast.error(`An error occurred. Please try again.`, { position: "bottom-center" });
-        }
+    // Handle input change
+    const handleInputChange = (e) => {
+        setRole(e.target.value);
     };
 
-    const handleBack = () => {
-        navigate('/users');
+    // Handle form submission
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('access');
+
+        api.patch(`/api/users/roles/update/${roleId}/`, { role : roleId }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        .then(() => {
+            navigate('/roles');
+        })
+        .catch(error => {
+            console.error('Error updating role:', error);
+        });
     };
 
     return (
         <div className="container mt-4">
-            <div className="row mb-3">
-                <div className="col">
-                    <h1>Update Roles</h1>
-                </div>
-            </div>
+            <h1>Update Role | Belum Bisa </h1>
+
+            <br />
+            <p>Backend sudah bisa</p> 
+            <br />
+
+            <p>Error : </p>
+            <p>1. Edit data belum bisa</p>
+
+            <br />
 
             <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="role" className="form-label">Role</label>
+                <div className="form-group">
+                    <label htmlFor="roleName">Role Name</label>
                     <input
                         type="text"
-                        className="form-control"
-                        id="role"
-                        value={role}
+                        id="roleName"
+                        value={role} // Ensure the value is always defined
                         onChange={(e) => setRole(e.target.value)}
-                        required
+                        className="form-control"
                     />
                 </div>
-                <button type="button" className="btn btn-secondary" onClick={handleBack}>Back</button>
-                <button type="submit" className="btn btn-primary">Update</button>
+                <button type="submit" className="btn btn-primary mt-3">Update</button>
             </form>
         </div>
     );
-};
+}
 
 export default UserRolesUpdate;

@@ -7,31 +7,41 @@ import React, { useEffect, useState } from 'react';
 
 function UserList() {
     const [users, setUsers] = useState([]);
+    const [roles, setRoles] = useState([]);
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('access'); // Get Token from local storage
-    
+
         // Get Users Data
-        api.get('/api/users/', {
+        const fetchUsers = api.get('/api/users/', {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
-        })
-        .then(response => {
-            setUsers(response.data); // Assuming response.data contains the list of users
-        })
-        .catch(error => {
-            console.error('Error fetching users:', error);
         });
+
+        // Get Roles Data
+        const fetchRoles = api.get('/api/roles/', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        Promise.all([fetchUsers, fetchRoles])
+            .then(([userResponse, roleResponse]) => {
+                setUsers(userResponse.data); // Assuming response.data contains the list of users
+                setRoles(roleResponse.data); // Assuming response.data contains the list of roles
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
     }, []);
 
     // Edit User Role
     const handleEdit = (roleId) => {
         if (roleId) {
             navigate(`/users/roles/update/${roleId}/`);
-
         } else {
             console.error('Role ID is undefined');
         }
@@ -47,6 +57,13 @@ function UserList() {
         user.username.toLowerCase().includes(search.toLowerCase())
     );
 
+    // Map roles to user roles
+    const getRoleName = (roleId) => {
+        const role = roleId;
+        console.log(roles.at(roleId).id);
+        return roles.at(roleId).id
+    };
+
     // Views
     return (
         <div className="container mt-4">
@@ -54,6 +71,21 @@ function UserList() {
             <div className="row mb-3">
                 <div className="col">
                     <h1>User</h1>
+
+                    <br />
+                    <p>Backend sudah bisa semua</p> 
+                    <br />
+                    <p>Error : </p>
+                    <p>1. Role masih terbalik datanya</p>
+                    <p>2. Edit data belum bisa</p>
+
+                    <input
+                        type="text"
+                        placeholder="Search by username"
+                        value={search}
+                        onChange={handleSearchChange}
+                        className="form-control mb-3"
+                    />
                 </div>
             </div>
 
@@ -78,9 +110,9 @@ function UserList() {
                                     <tr key={user.id}>
                                         <th scope="row" className="text-center">{index + 1}</th>
                                         <td>{user.username}</td>
-                                        <td>{user.profile}</td>
+                                        <td>{roles.at(index).name}</td>
                                         <td className="d-flex justify-content-center">
-                                            <button className="btn btn-warning me-2" onClick={() => handleEdit(user.id)} >
+                                            <button className="btn btn-warning me-2" onClick={() => handleEdit(user.id)}>
                                                 Edit
                                             </button>
                                         </td>
@@ -88,7 +120,7 @@ function UserList() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="2" className="text-center">No users found</td>
+                                    <td colSpan="4" className="text-center">No users found</td>
                                 </tr>
                             )}
                         </tbody>
